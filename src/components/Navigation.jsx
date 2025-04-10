@@ -1,3 +1,4 @@
+// src/components/Navigation.jsx
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from '@/styles/Home.module.css';
@@ -15,9 +16,14 @@ export default function Navigation() {
           2D Map
         </span>
       </Link>
-      <Link href="/3d">
-        <span className={router.pathname === '/3d' ? styles.activeNavLink : styles.navLink}>
-          3D Map
+      <Link href="/photorealistic">
+        <span className={router.pathname === '/photorealistic' ? styles.activeNavLink : styles.navLink}>
+          Photorealistic 3D
+        </span>
+      </Link>
+      <Link href="/custommap">
+        <span className={router.pathname === '/custommap' ? styles.activeNavLink : styles.navLink}>
+          View your own maps
         </span>
       </Link>
     </nav>
