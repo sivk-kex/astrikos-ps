@@ -1,40 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# 🚀 AstriVerse Platform – REST API Documentation
 
-## Getting Started
+This document outlines all the backend API routes available for the AstriVerse microservices platform. These endpoints are ready for integration with any frontend (React, mobile, etc).
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🔐 Authentication (NextAuth)
+- **OAuth**: GitHub
+- Handled internally via NextAuth
+- Session info: `GET /api/auth/session`
+
+---
+
+## 🖼 Vector (2D) Assets
+
+### `POST /api/vector2d/upload`
+Upload a vector file (SVG, AI, EPS).
+- **Form-Data**:
+  - `file`: vector file
+  - `tags`: comma-separated tags
+  - `ownerID`: user ID
+
+### `GET /api/vector2d/:id`
+Fetch metadata for a single vector asset.
+
+### `DELETE /api/vector2d/:id`
+Delete a vector asset by ID.
+
+### `GET /api/assets/vector2d`
+Fetch all uploaded 2D vector assets.
+
+---
+
+## 🎮 3D Model Assets
+
+### `POST /api/model3d/upload`
+Upload `.glb` 3D model file.
+- **Form-Data**:
+  - `file`: .glb file
+  - `tags`: comma-separated tags
+  - `ownerID`: user ID
+
+### `GET /api/model3d/:id`
+Fetch metadata for a single 3D model.
+
+### `DELETE /api/model3d/:id`
+Delete a 3D model by ID.
+
+### `GET /api/assets/model3d`
+Fetch all uploaded 3D models.
+
+---
+
+## 🗺 Map Assets (GeoJSON)
+
+### `POST /api/maps/upload`
+Upload `.geojson` file.
+- **Form-Data**:
+  - `file`: GeoJSON file
+  - `tags`: comma-separated tags
+  - `ownerID`: user ID
+
+### `GET /api/maps/:id`
+Fetch metadata for a single map.
+
+### `DELETE /api/maps/:id`
+Delete a map file by ID.
+
+### `GET /api/assets/maps`
+Fetch all uploaded maps.
+
+---
+
+## 🏗 Scene Builder
+
+### `POST /api/scenes/create`
+Create a new scene.
+- **JSON Body**:
+```json
+{
+  "name": "Scene Name",
+  "description": "...",
+  "ownerId": "user123",
+  "assets": [
+    {
+      "assetId": "...",
+      "type": "2d" | "3d" | "map",
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 1, "y": 1, "z": 1 }
+    }
+  ]
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### `GET /api/scenes/:id`
+Get a scene by ID.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### `PUT /api/scenes/:id`
+Update a scene.
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### `DELETE /api/scenes/:id`
+Delete a scene.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+### `GET /api/scenes?ownerId=user123`
+Get all scenes by owner ID.
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📤 Export & Share
 
-To learn more about Next.js, take a look at the following resources:
+### `GET /api/export/scene/:id`
+Export scene JSON (downloads `.json`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+### `POST /api/share/scene`
+Create public share token.
+- **JSON Body**: `{ "sceneId": "<scene-id>" }`
+- **Response**: `{ publicUrl: "/api/share/scene/:token" }`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### `GET /api/share/scene/:token`
+Fetch shared scene (read-only).
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📦 Optional (Not Implemented Yet)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+### `GET /api/download/scene/:id`
+Package all referenced scene assets as ZIP. (Planned)
+
+---
+
+## 📝 Notes for Frontend Devs
+- All routes return JSON.
+- Auth-required pages can use `useSession()` from NextAuth.
+- Files are served via `/public/uploads/...` or `/public/maps/...`
+- Use route structure to dynamically load viewers.
+
+---
+
+> Backend completed ✅  |  Ready for UI integration 🚀
+
