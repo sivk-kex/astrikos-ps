@@ -1,8 +1,8 @@
 const formidable = require("formidable");
 const fs = require("fs");
-const { connectDB } = require("../../../lib/db");
+//const { connectDB } = require("../../../lib/db");
 const ModelAsset = require("../../../models/ModelAsset");
-
+import connectDB from "../../../lib/db"
 export const config = {
   api: {
     bodyParser: false,

@@ -1,8 +1,8 @@
 const formidable = require("formidable");
 const fs = require("fs");
-const { connectDB } = require("../../../lib/db");
 const MapScene = require("../../../models/MapScene");
 
+import connectDB from "../../../lib/db";
 export const config = {
   api: {
     bodyParser: false,

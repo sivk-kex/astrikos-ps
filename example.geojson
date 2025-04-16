@@ -1,36 +1,13 @@
 {
-    "type": "FeatureCollection",
-    "features": [
-      {
-        "type": "Feature",
-        "properties": {},
-        "geometry": {
-          "coordinates": [
-            [
-              [
-                77.89703929628189,
-                29.864036665644733
-              ],
-              [
-                77.89703929628189,
-                29.865238401776622
-              ],
-              [
-                77.89586927355998,
-                29.865238401776622
-              ],
-              [
-                77.89586927355998,
-                29.864036665644733
-              ],
-              [
-                77.89703929628189,
-                29.864036665644733
-              ]
-            ]
-          ],
-          "type": "Polygon"
-        }
-      }
-    ]
-  }
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [77.5946, 12.9716] 
+      },
+      "properties": {}
+    }
+  ]
+}
