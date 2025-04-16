@@ -129,6 +129,12 @@ Package all referenced scene assets as ZIP. (Planned)
 
 ---
 
+### `GET /maps/:id`
+To display maps in 2D and 3D modes 
+
+### PUT `/api/maps/:id`
+To save generated 2D data in maps in DB 
+
 ## 📝 Notes for Frontend Devs
 - All routes return JSON.
 - Auth-required pages can use `useSession()` from NextAuth.
