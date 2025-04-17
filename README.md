@@ -1,7 +1,5 @@
 # AstriVerse Platform API Documentation
 
-![AstriVerse Logo](https://via.placeholder.com/150x50?text=AstriVerse+Logo)
-
 ## Table of Contents
 1. [Authentication](#authentication)
 2. [2D Vector Assets](#2d-vector-assets)
@@ -168,8 +166,8 @@ Content-Type: application/json
 
 ```bash
 # Clone repository
-git clone https://github.com/astriverse/core.git
-cd core
+git clone https://github.com/sivk-kex/astrikos-ps.git
+cd astrikos-ps
 
 # Install dependencies
 npm install
