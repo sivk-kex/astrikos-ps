@@ -1,6 +1,14 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-};
+import path from "path";
 
-export default nextConfig;
+export default {
+  webpack: (config) => {
+    config.plugins = config.plugins || [];
+
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      cesium: path.resolve(__dirname, "node_modules/cesium"),
+    };
+
+    return config;
+  },
+};

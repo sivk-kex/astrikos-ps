@@ -1,4 +1,3 @@
-// pages/api/assets/model3d/index.js
 import dbConnect from '@/lib/db';
 import ModelAsset from '@/models/ModelAsset';
 

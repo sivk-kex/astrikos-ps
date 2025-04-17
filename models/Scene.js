@@ -1,14 +1,15 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+
 
 const SceneSchema = new mongoose.Schema({
   name: String,
   description: String,
-  ownerId: String,
+  ownerUsername: String,
   createdAt: { type: Date, default: Date.now },
   assets: [
     {
-      assetId: String,         // ID of the vector/3D/map
-      type: String,            // "2d" | "3d" | "map"
+      assetId: String,
+      type: String,
       position: { x: Number, y: Number, z: Number },
       rotation: { x: Number, y: Number, z: Number },
       scale: { x: Number, y: Number, z: Number },
@@ -17,5 +18,4 @@ const SceneSchema = new mongoose.Schema({
   publicToken: { type: String, unique: true, sparse: true },
 });
 
-module.exports =
-  mongoose.models.Scene || mongoose.model("Scene", SceneSchema);
+module.exports = mongoose.models.Scene || mongoose.model("Scene", SceneSchema);

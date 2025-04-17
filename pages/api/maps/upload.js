@@ -1,7 +1,6 @@
 const formidable = require("formidable");
-const fs = require("fs");
-const { connectDB } = require("../../../lib/db");
-const MapScene = require("../../../models/MapScene");
+import MapScene from "../../../models/MapScene";
+import connectDB from "../../../lib/db";
 
 export const config = {
   api: {
@@ -18,22 +17,39 @@ export default async function handler(req, res) {
     const form = new formidable.IncomingForm({
       uploadDir: "./public/uploads/maps",
       keepExtensions: true,
+      multiples: false, 
     });
 
     form.parse(req, async (err, fields, files) => {
-      if (err) return res.status(500).json({ error: "Upload failed" });
+      if (err) {
+        console.error("Formidable error:", err);
+        return res.status(500).json({ error: "Upload failed" });
+      }
 
-      const file = files.file?.[0] || files.file;
-      if (!file) return res.status(400).json({ error: "Missing file" });
+      const file = files.file;
+      if (!file) return res.status(400).json({ error: "File not found" });
+      const title = fields.title?.[0] || fields.title || "Untitled";
+      const date = fields.date?.[0] || fields.date || new Date().toISOString();
+      const tags = fields.tags?.[0] || fields.tags || "default";
+      const ownerUsername =
+        fields.ownerUsername?.[0] || fields.ownerUsername || "demo"; // Optional
+      const splitTags = tags.split(",").map((tag) => tag.trim());
+
+      const newFilename = file[0].newFilename;
 
       const asset = await MapScene.create({
-        name: file.originalFilename || file.newFilename,
-        filePath: `/uploads/maps/${file.newFilename}`,
-        tags: (fields.tags?.[0] || "").split(","),
-        ownerId: fields.ownerID?.[0] || "demo",
+        name: title,
+        filePath: `/uploads/maps/${newFilename}`,
+        tags: splitTags,
+        date: new Date(date),
+        ownerUsername: ownerUsername,
       });
 
-      return res.status(200).json({ status: "uploaded", asset });
+      return res.status(200).json({
+        status: "uploaded",
+        asset,
+        url: `/uploads/maps/${newFilename}`,
+      });
     });
   } catch (err) {
     console.error("Map Upload Error:", err);

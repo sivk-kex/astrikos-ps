@@ -1,7 +1,7 @@
 const formidable = require("formidable");
 const fs = require("fs");
-const { connectDB } = require("../../../lib/db");
-const ModelAsset = require("../../../models/ModelAsset");
+import connectDB from "../../../lib/db.js";
+import ModelAsset from "../../../models/ModelAsset";
 
 export const config = {
   api: {
@@ -25,6 +25,7 @@ export default async function handler(req, res) {
 
       const file = files.file?.[0] || files.file;
       if (!file) return res.status(400).json({ error: "Missing file" });
+      console.log(file);
 
       const asset = await ModelAsset.create({
         name: file.originalFilename || file.newFilename,

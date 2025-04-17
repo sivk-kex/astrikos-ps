@@ -1,15 +1,17 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const MapSceneSchema = new mongoose.Schema({
   name: String,
   filePath: String,
   tags: [String],
-  ownerId: String,
+  ownerUsername: String,
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports =
+const MapScene =
   mongoose.models.MapScene || mongoose.model("MapScene", MapSceneSchema);
+
+export default MapScene;

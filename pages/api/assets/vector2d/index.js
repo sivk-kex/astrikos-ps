@@ -1,4 +1,3 @@
-// pages/api/assets/vector2d/index.js
 import dbConnect from '@/lib/db';
 import VectorAsset from '@/models/VectorAsset';
 
