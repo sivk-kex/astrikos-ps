@@ -1,141 +1,206 @@
-# 🚀 AstriVerse Platform – REST API Documentation
+# AstriVerse Platform API Documentation
 
-This document outlines all the backend API routes available for the AstriVerse microservices platform. These endpoints are ready for integration with any frontend (React, mobile, etc).
+![AstriVerse Logo](https://via.placeholder.com/150x50?text=AstriVerse+Logo)
 
----
-
-## 🔐 Authentication (NextAuth)
-- **OAuth**: GitHub
-- Handled internally via NextAuth
-- Session info: `GET /api/auth/session`
-
----
-
-## 🖼 Vector (2D) Assets
-
-### `POST /api/vector2d/upload`
-Upload a vector file (SVG, AI, EPS).
-- **Form-Data**:
-  - `file`: vector file
-  - `tags`: comma-separated tags
-  - `ownerID`: user ID
-
-### `GET /api/vector2d/:id`
-Fetch metadata for a single vector asset.
-
-### `DELETE /api/vector2d/:id`
-Delete a vector asset by ID.
-
-### `GET /api/assets/vector2d`
-Fetch all uploaded 2D vector assets.
+## Table of Contents
+1. [Authentication](#authentication)
+2. [2D Vector Assets](#2d-vector-assets)
+3. [3D Model Assets](#3d-model-assets)
+4. [Map Assets](#map-assets)
+5. [Scene Builder](#scene-builder)
+6. [Export & Share](#export--share)
+7. [Installation](#installation)
+8. [Configuration](#configuration)
+9. [File Structure](#file-structure)
 
 ---
 
-## 🎮 3D Model Assets
+## Authentication
 
-### `POST /api/model3d/upload`
-Upload `.glb` 3D model file.
-- **Form-Data**:
-  - `file`: .glb file
-  - `tags`: comma-separated tags
-  - `ownerID`: user ID
+### Get Session Info
+```http
+GET /api/auth/session
+```
 
-### `GET /api/model3d/:id`
-Fetch metadata for a single 3D model.
-
-### `DELETE /api/model3d/:id`
-Delete a 3D model by ID.
-
-### `GET /api/assets/model3d`
-Fetch all uploaded 3D models.
-
----
-
-## 🗺 Map Assets (GeoJSON)
-
-### `POST /api/maps/upload`
-Upload `.geojson` file.
-- **Form-Data**:
-  - `file`: GeoJSON file
-  - `tags`: comma-separated tags
-  - `ownerID`: user ID
-
-### `GET /api/maps/:id`
-Fetch metadata for a single map.
-
-### `DELETE /api/maps/:id`
-Delete a map file by ID.
-
-### `GET /api/assets/maps`
-Fetch all uploaded maps.
-
----
-
-## 🏗 Scene Builder
-
-### `POST /api/scenes/create`
-Create a new scene.
-- **JSON Body**:
+**Response:**
 ```json
 {
-  "name": "Scene Name",
-  "description": "...",
-  "ownerId": "user123",
+  "user": {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "image": "https://avatars.githubusercontent.com/u/1234567"
+  },
+  "expires": "2023-12-31T23:59:59.999Z"
+}
+```
+
+## 2D Vector Assets
+
+### Upload Vector File
+```http
+POST /api/vector2d/upload
+Content-Type: multipart/form-data
+```
+
+**Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| file | file | Yes | SVG/AI/EPS file |
+| tags | string | No | Comma-separated tags |
+| ownerID | string | Yes | User ID |
+
+### Get Vector Asset
+```http
+GET /api/vector2d/:id
+```
+
+### Delete Vector Asset
+```http
+DELETE /api/vector2d/:id
+```
+
+### List All Vectors
+```http
+GET /api/assets/vector2d
+```
+
+**Example Response:**
+```json
+[
+  {
+    "id": "vec_123",
+    "filename": "rocket.svg",
+    "tags": ["space", "ship"],
+    "ownerID": "user_123",
+    "url": "/uploads/2d/rocket.svg"
+  }
+]
+```
+
+## 3D Model Assets
+
+### Upload 3D Model
+```http
+POST /api/model3d/upload
+Content-Type: multipart/form-data
+```
+
+**Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| file | file | Yes | .glb 3D model |
+| tags | string | No | Model tags |
+| ownerID | string | Yes | Owner user ID |
+
+## Map Assets
+
+### Upload GeoJSON Map
+```http
+POST /api/maps/upload
+Content-Type: multipart/form-data
+```
+
+**Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| file | file | Yes | GeoJSON file |
+| tags | string | No | Map tags |
+| ownerID | string | Yes | Owner user ID |
+
+## Scene Builder(Not implemented yet)
+
+### Create Scene
+```http
+POST /api/scenes/create
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "name": "Space Scene",
+  "description": "My first space scene",
+  "ownerId": "user_123",
   "assets": [
     {
-      "assetId": "...",
-      "type": "2d" | "3d" | "map",
-      "position": { "x": 0, "y": 0, "z": 0 },
-      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "assetId": "mod_456",
+      "type": "3d",
+      "position": { "x": 10, "y": 5, "z": 0 },
+      "rotation": { "x": 0, "y": 90, "z": 0 },
       "scale": { "x": 1, "y": 1, "z": 1 }
     }
   ]
 }
 ```
 
-### `GET /api/scenes/:id`
-Get a scene by ID.
+## Export & Share(Not implemented yet)
 
-### `PUT /api/scenes/:id`
-Update a scene.
+### Export Scene
+```http
+GET /api/export/scene/:id
+Accept: application/json
+```
 
-### `DELETE /api/scenes/:id`
-Delete a scene.
+### Share Scene
+```http
+POST /api/share/scene
+Content-Type: application/json
+```
 
-### `GET /api/scenes?ownerId=user123`
-Get all scenes by owner ID.
+**Request Body:**
+```json
+{
+  "sceneId": "scene_789"
+}
+```
 
----
+**Response:**
+```json
+{
+  "publicUrl": "https://astriverse.app/api/share/scene/abc123xyz"
+}
+```
 
-## 📤 Export & Share
+## Installation
 
-### `GET /api/export/scene/:id`
-Export scene JSON (downloads `.json`).
+```bash
+# Clone repository
+git clone https://github.com/astriverse/core.git
+cd core
 
-### `POST /api/share/scene`
-Create public share token.
-- **JSON Body**: `{ "sceneId": "<scene-id>" }`
-- **Response**: `{ publicUrl: "/api/share/scene/:token" }`
+# Install dependencies
+npm install
 
-### `GET /api/share/scene/:token`
-Fetch shared scene (read-only).
+# Set up environment
+cp .env.example .env.local
 
----
+# Start development server
+npm run dev
+```
 
-## 📦 Optional (Not Implemented Yet)
+## Configuration
 
-### `GET /api/download/scene/:id`
-Package all referenced scene assets as ZIP. (Planned)
+**.env.local:**
+```ini
+MONGODB_URI=mongodb://localhost:27017/astriverse
+NEXTAUTH_SECRET=your_random_secret_here
+NEXTAUTH_URL=http://localhost:3000
+GITHUB_ID=your_github_oauth_id
+GITHUB_SECRET=your_github_oauth_secret
+```
 
----
+## File Structure
 
-## 📝 Notes for Frontend Devs
-- All routes return JSON.
-- Auth-required pages can use `useSession()` from NextAuth.
-- Files are served via `/public/uploads/...` or `/public/maps/...`
-- Use route structure to dynamically load viewers.
-
----
-
-> Backend completed ✅  |  Ready for UI integration 🚀
-
+```
+public/
+└── uploads/
+    ├── 2d/
+    │   └── [vector_files].svg
+    ├── 3d/
+    │   └── [model_files].gltf
+    └── maps/
+        └── [geojson_files].geojson
+```
